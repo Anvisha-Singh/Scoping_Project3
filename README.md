@@ -96,7 +96,6 @@ The main goal is to capture symbolic information and simulate execution without 
     -   Scoping: Global  i,  x, local  x  in  TestProc function.
     -   Errors: Undeclared  z used outside of scope
  
-    -   
 
 
 ![image](https://github.com/user-attachments/assets/929a7e9d-b4ed-44c0-a756-393537195946)
@@ -120,7 +119,8 @@ output with undefined error
     -   Errors: 'BREAK' used outside of a loop will throw error
 
 <img width="803" alt="image" src="https://github.com/user-attachments/assets/9594db6c-b636-4683-9cf6-8c55be9af8ee" />
-As shown in the above test case the fiest break statement exits without whereas the second break statement at line 15 will throw an error 
+
+- As shown in the above test case the first break statement exits without any error  whereas the second break statement at line 15 will throw an error  beacuse it is outside of the loop
 <img width="484" alt="image" src="https://github.com/user-attachments/assets/bbe64f8b-f3ae-49ac-828e-587f7e59474a" />
 
 
