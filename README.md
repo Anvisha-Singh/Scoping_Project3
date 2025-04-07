@@ -17,7 +17,7 @@ The main goal is to capture symbolic information and simulate execution without 
 -   **ScopeVisitor.java**: Visitor class implementing scoping and simulation logic.
 -   **SymbolTable.java**: Class for managing symbols in each scope.
 -   **ScopeChecker.java**: Main class to parse and run the visitor
--   **TestScope.pas**: Test case covering scoping, loops, and error detection.
+-   **test1.pas**: Test case covering scoping, loops, and error detection.
 
 
 ## Requirements Implemented
@@ -25,8 +25,7 @@ The main goal is to capture symbolic information and simulate execution without 
 ### Language Features
 
 -   **While-do and For-do Loops**: Simulated with hardcoded iterations:
-    -   for  loops run 10 times (mimicking  1 to 10).
-    -   while  loops run 3 times (mimicking  5 to 3  with a break).
+    -   while  loops run 3 times (mimicking  0 to 3  with a break).
 -   **Break and Continue Keywords**: 
 -   **User-defined Procedures**: Supported with static scoping (e.g.,  Show  procedure).
 -   **Scoping**: Static scoping implemented:
@@ -44,48 +43,37 @@ The main goal is to capture symbolic information and simulate execution without 
 
 ## How to Run
 
-### Prerequisites
 
--   **Java**: JDK 23 or compatible version 
--   **ANTLR**: Antlr jar in classpath
+1. Generate ANTLR Lexer and Parser
 
-### Setup
+    java -jar < -path to the antlr jar file > Delphi.g4 -Dlanguage=Java -visitor
+   
+    java -jar /usr/local/lib/antlr-4.13.2-complete.jar pascal.g4 -Dlanguage=Java -visitor
 
-1.  **Place Files:**
-    -   Ensure all files (pascal.g4,  ScopeVisitor.java,  SymbolTable.java,  ScopeChecker.java,  TestScope.pas) are in your project directory (e.g.,  /Users/anvishasingh/IdeaProjects/Project3/).
-    -   Place  antlr-4.13.2-complete.jar  in a known location (e.g.,  /Users/anvishasingh/Desktop/).
-2.  **Generate Parser:**
-    -   Run the ANTLR tool to generate parser and lexer:
-        
-  
-        
-        `java -jar /Users/anvishasingh/Desktop/antlr-4.13.2-complete.jar -visitor -package pascal pascal.g4`
-        
-    -   This generates  pascalLexer.java,  pascalParser.java, etc., in the  pascal  package.
-3.  **Compile:**
-    -   Compile all Java files with the ANTLR jar in the classpath:
-        `javac -cp .:/Users/anvishasingh/Desktop/antlr-4.13.2-complete.jar *.java`
+3. Compile the files
+   
+     javac -cp ".:/usr/local/lib/antlr-4.13.2-complete.jar" *.java
+ 
+5. Run the interpreter with the testcase file
+
+ java -cp ".:/usr/local/lib/antlr-4.13.2-complete.jar" ScopeChecker < -test case file name>
+ 
+ java -cp ".:/usr/local/lib/antlr-4.13.2-complete.jar" ScopeChecker test2.pas
+
         
 
 ### Running the Program
-
--   Execute  ScopeChecker  with the test case:
-
-    `java -cp .:/Users/anvishasingh/Desktop/antlr-4.13.2-complete.jar ScopeChecker`
     
--   **Input:**  Assumes  TestScope.pas  is in the current directory (modify  ScopeChecker  if the path differs).
--   **Output:**  Prints "hi" for each  writeln  call, scope exit messages, and any errors.
+-   **Input:**  Assumes  test1.pas  is in the same directory as all other files
 
 ### Example Output
-
-
 
 ## Current Functionality
 
 -   **Scoping:**  Tracks symbols in a stack of  SymbolTable  objects, detecting undeclared identifiers and scope violations.
 -   **Simulation:**  Prints "hi" for  writeln  calls, with hardcoded loop iterations:
-    -   for i := 1 to x  → 10 "hi"s.
-    -   while x > 0  → 3 "hi"s (mimicking break at  x = 2).
+    -   for i := 0 to 3  → 3 "hi"s.
+    -   while x < 3  → 3 "hi"s (mimicking break at  x = 3).
 -   **Errors:**  Reports undeclared variables and misplaced  break/continue.
 
 
