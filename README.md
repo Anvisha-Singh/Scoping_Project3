@@ -123,6 +123,21 @@ output with undefined error
 - As shown in the above test case the first break statement exits without any error  whereas the second break statement at line 15 will throw an error  beacuse it is outside of the loop
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/bbe64f8b-f3ae-49ac-828e-587f7e59474a" />
 
+## Test Case Details for control flow of break/continue
+
+-   ** Tests Covered :**
+    -   tests the control flow for the program when break/continue keywords are used
+    -   exits the loop after running specified number of times
+    -   
+![image](https://github.com/user-attachments/assets/49449a01-1905-4f42-879c-e038fa23692a)
+
+- Hi is printed only 3 times after which it exits the loop
+
+![image](https://github.com/user-attachments/assets/99afaa91-0ddc-4bfa-9d51-f71cf380a012)
+
+
+
+
 
 
 
