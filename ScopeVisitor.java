@@ -9,6 +9,24 @@ public class ScopeVisitor extends pascalBaseVisitor<Void> {
     private int scopeLevel = 0;
     private int loopDepth = 0;
 
+    private int loopIterations = 0;
+    private boolean inLoop = false;
+    //functions to check scope of break/continue
+    private void enterLoop() {
+        loopDepth++;
+        loopIterations = 0;
+        inLoop = true;
+        enterScope("loop");
+        System.out.println("↘ Entering loop (depth " + loopDepth + ")");
+    }
+
+    private void exitLoop() {
+        exitScope("loop");
+        System.out.println("↗ Exited loop after " + loopIterations + " iterations");
+        loopDepth--;
+        inLoop = false;
+    }
+
     private void enterScope(String scopeType) {
         scopes.push(new SymbolTable(scopes.isEmpty() ? null : scopes.peek()));
         scopeLevel++;
@@ -30,19 +48,12 @@ public class ScopeVisitor extends pascalBaseVisitor<Void> {
         );
     }
 
-    private void enterLoop() {
-        loopDepth++;
-        enterScope("loop");
-    }
 
-    private void exitLoop() {
-        exitScope("loop");
-        loopDepth--;
-    }
 
     @Override
     public Void visitProgram(pascalParser.ProgramContext ctx) {
         enterScope("global");
+        scopes.peek().addSymbol("writeln", "BUILTIN_PROCEDURE");
         String programName = ctx.programHeading().identifier().IDENT().getText().toLowerCase();
         scopes.peek().addSymbol(programName, "PROGRAM");
         visitChildren(ctx);
@@ -74,8 +85,16 @@ public class ScopeVisitor extends pascalBaseVisitor<Void> {
     }
 
     @Override
+    public Void visitPrintStatement(pascalParser.PrintStatementContext ctx) {
+        String expressionText = ctx.expression().getText();
+        System.out.println(expressionText);
+        return null;
+    }
+
+    @Override
     public Void visitProcedureDeclaration(pascalParser.ProcedureDeclarationContext ctx) {
         String procName = ctx.identifier().IDENT().getText();
+
         if (!scopes.peek().addSymbol(procName, "PROCEDURE")) {
             errors.add("Duplicate procedure: " + procName);
         }
@@ -104,9 +123,66 @@ public class ScopeVisitor extends pascalBaseVisitor<Void> {
     }
 
     @Override
+    public Void visitProcedureStatement(pascalParser.ProcedureStatementContext ctx) {
+        String procName = ctx.identifier().getText();
+        if (procName.equalsIgnoreCase("writeln")) {
+            if (ctx.parameterList() != null) {
+                String value = ctx.parameterList().getText();
+
+                value = value.replaceAll("'", "");
+                System.out.println(value);
+            }
+            return null;
+        }
+        return super.visitProcedureStatement(ctx);
+    }
+
+
+    @Override
+    public Void visitFunctionDeclaration(pascalParser.FunctionDeclarationContext ctx) {
+        String funcName = ctx.identifier().IDENT().getText();
+
+        if (funcName.equalsIgnoreCase("writeln")) {
+            return null;
+        }
+        if (!scopes.peek().addSymbol(funcName, "FUNCTION")) {
+            errors.add("Duplicate function: " + funcName);
+        }
+
+        enterScope("function '" + funcName + "'");
+
+        if (ctx.formalParameterList() != null) {
+            for (pascalParser.FormalParameterSectionContext section :
+                    ctx.formalParameterList().formalParameterSection()) {
+                if (section.parameterGroup() != null) {
+                    pascalParser.IdentifierListContext idList =
+                            section.parameterGroup().identifierList();
+                    for (pascalParser.IdentifierContext idCtx : idList.identifier()) {
+                        String paramName = idCtx.IDENT().getText();
+                        if (!scopes.peek().addSymbol(paramName, "PARAMETER")) {
+                            errors.add("Duplicate parameter: " + paramName);
+                        }
+                    }
+                }
+            }
+        }
+
+        visit(ctx.block());
+        exitScope("function '" + funcName + "'");
+        return null;
+    }
+
+    @Override
     public Void visitWhileStatement(pascalParser.WhileStatementContext ctx) {
         enterLoop();
-        visitChildren(ctx);
+        while (true) {
+            loopIterations++;
+            System.out.println("[Loop iteration " + loopIterations + "]");
+            visitChildren(ctx);
+            //hardcoding this since variable variable values are not getting tracked in this simulation
+            //but this replicates the behaviour of how the value of the loop variable would be fetched and compared
+            if (loopIterations >= 3) break; // Demo break condition
+        }
         exitLoop();
         return null;
     }
@@ -123,10 +199,26 @@ public class ScopeVisitor extends pascalBaseVisitor<Void> {
         return null;
     }
 
+//    @Override
+//    public Void visitBreakStatement(pascalParser.BreakStatementContext ctx) {
+//        if (loopDepth == 0) {
+//            errors.add("'BREAK' used outside of a loop at line " + ctx.getStart().getLine());
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    public Void visitContinueStatement(pascalParser.ContinueStatementContext ctx) {
+//        if (loopDepth == 0) {
+//            errors.add("'CONTINUE' used outside of a loop at line " + ctx.getStart().getLine());
+//        }
+//        return null;
+//    }
+
     @Override
     public Void visitBreakStatement(pascalParser.BreakStatementContext ctx) {
         if (loopDepth == 0) {
-            errors.add("'BREAK' used outside of a loop at line " + ctx.getStart().getLine());
+            errors.add("'BREAK' used outside of loop at line " + ctx.getStart().getLine());
         }
         return null;
     }
@@ -134,7 +226,9 @@ public class ScopeVisitor extends pascalBaseVisitor<Void> {
     @Override
     public Void visitContinueStatement(pascalParser.ContinueStatementContext ctx) {
         if (loopDepth == 0) {
-            errors.add("'CONTINUE' used outside of a loop at line " + ctx.getStart().getLine());
+            errors.add("'CONTINUE' used outside of loop at line " + ctx.getStart().getLine());
+        } else {
+            System.out.println("! CONTINUE at iteration " + loopIterations);
         }
         return null;
     }

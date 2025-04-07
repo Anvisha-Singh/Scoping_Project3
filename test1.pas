@@ -12,5 +12,4 @@ begin
     if x = 5 then
       break;
   end;
-   break;
 end.

@@ -1,11 +1,11 @@
 
  program ScopeTest;
  var
-   x, tmp: integer; { Declare globally }
+   x, tmp: integer;
 
  procedure TestProc(y: integer);
  var
-   z: integer; { Declare at procedure level }
+   z: integer;
  begin
      x := y;
      z := 5;
