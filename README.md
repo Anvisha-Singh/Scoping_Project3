@@ -88,34 +88,45 @@ The main goal is to capture symbolic information and simulate execution without 
     -   while x > 0  → 3 "hi"s (mimicking break at  x = 2).
 -   **Errors:**  Reports undeclared variables and misplaced  break/continue.
 
-## Known Issues
 
-1.  **Parsing Error:**
-    -   line 29:7 mismatched input ')': Occurs at  Show();, possibly due to:
-        -   Hidden characters in  TestScope.pas.
-        -   Grammar mismatch in  pascal.g4  (e.g.,  procedureStatement  rule).
-        -   Fix: Retype  TestScope.pas  or share  pascal.g4/ScopeChecker  for debugging.
-2.  **Incomplete Features:**
-    -   break  and  continue  don’t affect execution flow.
-    -   No parameter passing in procedures.
-    -   No constant propagation.
 
 ## Test Case Details
 
-### TestScope.pas
+-   ** Tests Covered :**
+    -   Scoping: Global  i,  x, local  x  in  TestProc function.
+    -   Errors: Undeclared  z used outside of scope
+ 
+    -   
 
 
 ![image](https://github.com/user-attachments/assets/929a7e9d-b4ed-44c0-a756-393537195946)
 
 
--   **Tests:**
-    -   Scoping: Global  i,  x, local  x  in  Show.
-    -   Loops:  for  and  while  execution.
-    -   Errors: Undeclared  y,  break  outside loop.
+Expected output 
+<img width="1262" alt="image" src="https://github.com/user-attachments/assets/7d681cef-7ca4-4fb9-bde8-df35c7342c11" />
+
+Using the variable outside of scope
+
+![image](https://github.com/user-attachments/assets/9cdb9a6a-630e-4ffd-9fca-99271bb580a5)
+
+output with undefined error
+
+<img width="490" alt="image" src="https://github.com/user-attachments/assets/2d420831-6659-4e14-9575-63cfe1817081" />
+
+## Test Case Details for break and continue
+
+-   ** Tests Covered :**
+    -   test the scope of break/continue keywords
+    -   Errors: 'BREAK' used outside of a loop will throw error
+
+<img width="803" alt="image" src="https://github.com/user-attachments/assets/9594db6c-b636-4683-9cf6-8c55be9af8ee" />
+As shown in the above test case the fiest break statement exits without whereas the second break statement at line 15 will throw an error 
+<img width="484" alt="image" src="https://github.com/user-attachments/assets/bbe64f8b-f3ae-49ac-828e-587f7e59474a" />
+
+
+
+
+
 
 
     
-
-----------
-
-This README reflects your current state (printing "hi" 13 times) and provides clear instructions. Once you share ScopeChecker or pascal.g4, I can refine it further to fix the parsing error. Let me know if you want adjustments!
