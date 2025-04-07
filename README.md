@@ -98,19 +98,19 @@ The main goal is to capture symbolic information and simulate execution without 
  
 
 
-![image](https://github.com/user-attachments/assets/929a7e9d-b4ed-44c0-a756-393537195946)
-
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/929a7e9d-b4ed-44c0-a756-393537195946" />
 
 Expected output 
-<img width="1262" alt="image" src="https://github.com/user-attachments/assets/7d681cef-7ca4-4fb9-bde8-df35c7342c11" />
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/7d681cef-7ca4-4fb9-bde8-df35c7342c11" />
 
 Using the variable outside of scope
 
-![image](https://github.com/user-attachments/assets/9cdb9a6a-630e-4ffd-9fca-99271bb580a5)
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/9cdb9a6a-630e-4ffd-9fca-99271bb580a5" />
 
 output with undefined error
 
-<img width="490" alt="image" src="https://github.com/user-attachments/assets/2d420831-6659-4e14-9575-63cfe1817081" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/2d420831-6659-4e14-9575-63cfe1817081" />
 
 ## Test Case Details for break and continue
 
@@ -118,10 +118,10 @@ output with undefined error
     -   test the scope of break/continue keywords
     -   Errors: 'BREAK' used outside of a loop will throw error
 
-<img width="803" alt="image" src="https://github.com/user-attachments/assets/9594db6c-b636-4683-9cf6-8c55be9af8ee" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/9594db6c-b636-4683-9cf6-8c55be9af8ee" />
 
 - As shown in the above test case the first break statement exits without any error  whereas the second break statement at line 15 will throw an error  beacuse it is outside of the loop
-<img width="484" alt="image" src="https://github.com/user-attachments/assets/bbe64f8b-f3ae-49ac-828e-587f7e59474a" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/bbe64f8b-f3ae-49ac-828e-587f7e59474a" />
 
 
 
